@@ -53,6 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location mLastKnownLocation;
     private LocationCallback mLocationCallback;
     private ClusterManager<Place> BikeClusterManager;
+    private Place clicketClusterItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,10 +142,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Set up ClusterManager
         BikeClusterManager = new ClusterManager<>(this, mMap);
+
+        // Set custom cluster renderer
         BikeClusterManager.setRenderer(new CustomClusterManager(this, mMap, BikeClusterManager));
+
+        // Set a clickListener that listens to the click on the markers, and displays an informationWindow
+        BikeClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Place>() {
+            @Override
+            public boolean onClusterItemClick(Place place) {
+                clicketClusterItem = place;
+                CustomBikeAndRackInfoWindow.getCurrentSelectedItem(clicketClusterItem);
+                return false;
+            }
+        });
+
+        // Set the custom infoWindowAdapter
+        BikeClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new CustomBikeAndRackInfoWindow(this));
+
         mMap.setOnCameraIdleListener(BikeClusterManager);
         mMap.setOnMarkerClickListener(BikeClusterManager);
-        mMap.setOnInfoWindowClickListener(BikeClusterManager);
+        mMap.setInfoWindowAdapter(BikeClusterManager.getMarkerManager());
 
         getLocationPermission();
         LoadBikes.getBikes(mService, this, BikeClusterManager);
