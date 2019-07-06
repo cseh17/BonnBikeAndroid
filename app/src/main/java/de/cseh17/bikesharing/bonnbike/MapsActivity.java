@@ -15,6 +15,8 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -43,6 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int DEFAULT_ZOOM = 15;
     private static final LatLng DEFAULT_LOCATION = new LatLng(50.73438, 7.09549);
     private GoogleMap mMap;
+    private SupportMapFragment mapFragment;
     private APIService mService;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
@@ -59,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
         // Check if mapFragment is not null
@@ -146,6 +149,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLocationPermission();
         LoadBikes.getBikes(mService, this, BikeClusterManager);
         LoadServiceArea.getNetworkServiceAreas(mService, this, mMap);
+
+        // Move the navigation Buttons set to the upper right corner
+        View navigationButtonSet = ((View) (mapFragment.getView().findViewById(Integer.parseInt("1")).getParent())).findViewById(Integer.parseInt("4"));
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) navigationButtonSet.getLayoutParams();
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        rlp.setMargins(0, 30, 30, 0);
+
     }
 
     // Check for location permission
