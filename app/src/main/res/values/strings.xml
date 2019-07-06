@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BonnBike</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="api_request_string_bikes">https://api.nextbike.net/maps/nextbike-live.json?city=547</string>
+    <string name="api_request_string_service_area">https://iframe.nextbike.net/4com/map/?t=fz&amp;domain=bf</string>
+</resources>
