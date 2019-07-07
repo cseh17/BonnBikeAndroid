@@ -1,9 +1,12 @@
 package de.cseh17.bikesharing.bonnbike;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +26,7 @@ public class CustomBikeAndRackInfoWindow implements GoogleMap.InfoWindowAdapter 
     private Context receivedContext;
 
     CustomBikeAndRackInfoWindow(Context mContext) {
+
         customBikeAndRackInfoWindowView = LayoutInflater.from(mContext).inflate(R.layout.custom_bike_and_rack_info_window, null);
         receivedContext = mContext;
     }
@@ -37,26 +41,33 @@ public class CustomBikeAndRackInfoWindow implements GoogleMap.InfoWindowAdapter 
 
         // Check if the marker is a bike or a rack, and configure it accordingly
         if (clickedClusterItem.getBike()) {
+
+            // Set bike InfoWindow title
             TextView ciwTitleTv = customBikeAndRackInfoWindowView.findViewById(R.id.ciw_title);
             ciwTitleTv.setText(receivedContext.getString(R.string.custom_info_window_bike_name_title));
+            ciwTitleTv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            // Set bike InfoWindow subtitle with bike CODE
             TextView ciwSubtitleTv = customBikeAndRackInfoWindowView.findViewById(R.id.ciw_subtitle);
             ciwSubtitleTv.setText(clickedClusterItem.getBikeNumbers().get(0));
             ciwSubtitleTv.setTextColor(Color.BLACK);
             ciwSubtitleTv.setTextSize(35);
+
+            ciwSubtitleTv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         } else {
 
-            // Set InfoWindow title
+            // Set Rack nfoWindow title
             TextView ciwTitleTv = customBikeAndRackInfoWindowView.findViewById(R.id.ciw_title);
             ciwTitleTv.setText(clickedClusterItem.getName());
+            ciwTitleTv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            // Set rack information like free racks and available bikes
+            // Set Rack subtitle with information like free racks and available bikes
             TextView ciwSubtitleTv = customBikeAndRackInfoWindowView.findViewById(R.id.ciw_subtitle);
             ciwSubtitleTv.setText(receivedContext.getString(R.string.custom_info_window_rack_available_bike_title) + clickedClusterItem.getBikes());
             ciwSubtitleTv.setTextColor(receivedContext.getColor(R.color.darkGreen));
             ciwSubtitleTv.setTextSize(18);
+            ciwSubtitleTv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-
-
         return customBikeAndRackInfoWindowView;
     }
 

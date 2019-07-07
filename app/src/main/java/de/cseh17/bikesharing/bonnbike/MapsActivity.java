@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import android.Manifest;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Objects;
@@ -46,6 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final LatLng DEFAULT_LOCATION = new LatLng(50.73438, 7.09549);
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
+    private AppInfoFragment appInfoFragment;
     private APIService mService;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
@@ -64,11 +68,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map_fragment);
+
+        // Initialize all fragments
+        appInfoFragment = new AppInfoFragment();
 
         // Check if mapFragment is not null
         assert mapFragment != null : "mapFragment is null";
         mapFragment.getMapAsync(this);
+
+        // Create myLocation & info floating Buttons
+        final FloatingActionButton floatingActionInfoButton = findViewById(R.id.infoButton);
+        floatingActionInfoButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.add(R.id.map_fragment, appInfoFragment).addToBackStack(null).commit();
+            }
+        });
 
     // ------------------------ NON - UI ---------------------
 
