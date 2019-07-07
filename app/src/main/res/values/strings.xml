@@ -4,4 +4,7 @@
 
     <string name="api_request_string_bikes">https://api.nextbike.net/maps/nextbike-live.json?city=547</string>
     <string name="api_request_string_service_area">https://iframe.nextbike.net/4com/map/?t=fz&amp;domain=bf</string>
+
+    <string name="custom_info_window_bike_name_title">Fahrradnummer:</string>
+    <string name="custom_info_window_rack_available_bike_title">Verfügbare Fahrräder:\u0020</string>
 </resources>
