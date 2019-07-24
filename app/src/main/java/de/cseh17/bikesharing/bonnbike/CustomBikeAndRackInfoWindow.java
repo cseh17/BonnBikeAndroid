@@ -3,9 +3,12 @@ package de.cseh17.bikesharing.bonnbike;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -52,8 +55,11 @@ public class CustomBikeAndRackInfoWindow implements GoogleMap.InfoWindowAdapter 
             ciwSubtitleTv.setText(clickedClusterItem.getBikeNumbers().get(0));
             ciwSubtitleTv.setTextColor(Color.BLACK);
             ciwSubtitleTv.setTextSize(35);
-
             ciwSubtitleTv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            // Set the logo of the infoView window from the resources
+            ImageView ciwImageView = customBikeAndRackInfoWindowView.findViewById(R.id.ciw_logo);
+            ciwImageView.setImageResource(R.drawable.ic_bonnbike_bike);
         } else {
 
             // Set Rack nfoWindow title
@@ -67,6 +73,7 @@ public class CustomBikeAndRackInfoWindow implements GoogleMap.InfoWindowAdapter 
             ciwSubtitleTv.setTextColor(receivedContext.getColor(R.color.darkGreen));
             ciwSubtitleTv.setTextSize(18);
             ciwSubtitleTv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
         }
         return customBikeAndRackInfoWindowView;
     }

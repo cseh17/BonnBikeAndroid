@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -58,6 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationCallback mLocationCallback;
     private ClusterManager<Place> BikeClusterManager;
     private Place clicketClusterItem;
+    private FloatingActionButton floatingActionInfoButton;
+    private FloatingActionButton floatinggetMyLocationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         // Create myLocation & info floating Buttons
-        final FloatingActionButton floatingActionInfoButton = findViewById(R.id.infoButton);
+        floatingActionInfoButton = findViewById(R.id.infoButton);
+        floatinggetMyLocationButton = findViewById(R.id.myLocationButton);
         floatingActionInfoButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -86,6 +90,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 ft.add(R.id.map_fragment, appInfoFragment).addToBackStack(null).commit();
+                floatingActionInfoButton.setClickable(false);
+                floatinggetMyLocationButton.setClickable(false);
+            }
+        });
+
+        floatinggetMyLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDeviceLocation();
             }
         });
 
@@ -102,8 +115,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Create & set the location request interval for the mLocationRequest object
         mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(30000);
-        mLocationRequest.setFastestInterval(30000);
+        mLocationRequest.setInterval(90000);
+        mLocationRequest.setFastestInterval(90000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         // Set up a LocationCallback object, that receives periodical location data
@@ -156,6 +169,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
+        // When back is pressed and the app return from other fragments, make buttons on the map available again.
+        floatingActionInfoButton.setClickable(true);
+        floatinggetMyLocationButton.setClickable(true);
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
@@ -181,6 +203,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnCameraIdleListener(BikeClusterManager);
         mMap.setOnMarkerClickListener(BikeClusterManager);
         mMap.setInfoWindowAdapter(BikeClusterManager.getMarkerManager());
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         getLocationPermission();
         LoadBikes.getBikes(mService, this, BikeClusterManager);
@@ -254,10 +277,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         try {
             if (mLocationPermissionGranted){
                 mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                floatinggetMyLocationButton.setEnabled(true);
             } else {
                 mMap.setMyLocationEnabled(false);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                floatinggetMyLocationButton.setEnabled(false);
                 mLastKnownLocation = null;
                 getLocationPermission();
             }
@@ -278,12 +301,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             // Set the map's camera position to the current location of the device
                             mLastKnownLocation = (Location) task.getResult();
                             assert mLastKnownLocation != null : "mLastKnowLocation is null. There is no last known location available";
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM ));
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM ));
                         } else {
                             Log.d("no current location", "Current location is null. Using defaults");
                             Log.e("Location error", "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, DEFAULT_ZOOM));
-                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, DEFAULT_ZOOM));
+                            floatinggetMyLocationButton.setEnabled(false);
                         }
                     }
                 });

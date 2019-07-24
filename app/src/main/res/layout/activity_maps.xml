@@ -21,15 +21,36 @@
             android:layout_marginStart="20dp">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/infoButton"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:src="@android:drawable/ic_menu_mylocation"
-            map:backgroundTint="@color/colorPrimary"
-            map:borderWidth="0dp"
-            map:elevation="6dp"
-            map:pressedTranslationZ="12dp"
-            map:fabSize="normal"/>
+                android:id="@+id/infoButton"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:src="@drawable/ic_info_outline"
+                map:maxImageSize="40dp"
+                map:backgroundTint="@color/bonnBikeColor"
+                map:borderWidth="0dp"
+                map:elevation="6dp"
+                map:pressedTranslationZ="12dp"
+                map:fabSize="normal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/myLocationButton"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:src="@drawable/ic_bonnbikemylocationbutton"
+                map:maxImageSize="50dp"
+                map:backgroundTint="@color/bonnBikeColor"
+                map:borderWidth="0dp"
+                map:elevation="6dp"
+                map:pressedTranslationZ="12dp"
+                map:fabSize="normal"/>
         </LinearLayout>
 
     </fragment>

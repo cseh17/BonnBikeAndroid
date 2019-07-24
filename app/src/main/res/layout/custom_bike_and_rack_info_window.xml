@@ -9,9 +9,11 @@
         <ImageView
             android:contentDescription="@null"
             android:id="@+id/ciw_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:clickable="false"/>
 
         <LinearLayout
