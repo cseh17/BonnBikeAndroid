@@ -1,10 +1,8 @@
 package de.cseh17.bikesharing.bonnbike;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +26,7 @@ public class CustomBikeAndRackInfoWindow implements GoogleMap.InfoWindowAdapter 
     private static Place clickedClusterItem;
     private Context receivedContext;
 
+    @SuppressLint("InflateParams")
     CustomBikeAndRackInfoWindow(Context mContext) {
 
         customBikeAndRackInfoWindowView = LayoutInflater.from(mContext).inflate(R.layout.custom_bike_and_rack_info_window, null);
@@ -73,6 +72,10 @@ public class CustomBikeAndRackInfoWindow implements GoogleMap.InfoWindowAdapter 
             ciwSubtitleTv.setTextColor(receivedContext.getColor(R.color.darkGreen));
             ciwSubtitleTv.setTextSize(18);
             ciwSubtitleTv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            // Set the logo of the infoView window from the resources
+            ImageView ciwImageView = customBikeAndRackInfoWindowView.findViewById(R.id.ciw_logo);
+            ciwImageView.setImageResource(R.drawable.ic_bonnbikestation);
 
         }
         return customBikeAndRackInfoWindowView;

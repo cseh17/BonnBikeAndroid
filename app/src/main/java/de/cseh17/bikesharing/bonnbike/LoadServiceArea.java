@@ -1,6 +1,9 @@
 package de.cseh17.bikesharing.bonnbike;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -36,6 +39,17 @@ class LoadServiceArea {
                             // Check if the response body is not null, if yes then assert
                             assert response.body() != null : "Response body is null";
                             MapOperations.drawPolygonOntoMap(mMap, response.body().getGeojson().getNodeValue().getFeatures());
+                        } else {
+                            AlertDialog dialog = CustomDialogAlertBuilder.onCreateDialog((Activity) mContext, mContext.getResources().getString(R.string.general_error_title), mContext.getResources().getString(R.string.general_error), "OK");
+
+                            // Create a dialog object, and set an onShow listener to it, in order to be able to change the color of the button.
+                            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                                @Override
+                                public void onShow(DialogInterface dialogInterface) {
+                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(mContext.getResources().getColor(R.color.bonnBikeColor,null));
+                                }
+                            });
+                            dialog.show();
                         }
                     }
 

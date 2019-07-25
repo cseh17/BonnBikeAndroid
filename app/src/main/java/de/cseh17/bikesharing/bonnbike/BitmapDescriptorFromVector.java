@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
-public class BitmapDescriptorFromVector {
+class BitmapDescriptorFromVector {
 
     static BitmapDescriptor bitmapDescriptorFromVector(Context mContext, int vectorResId){
         Drawable vectorDrawable = ContextCompat.getDrawable(mContext, vectorResId);

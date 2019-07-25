@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -155,16 +154,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         assert mConnectivityManager != null : "ConnectivityManager is null";
         if (!CheckConnection.isConnected(mConnectivityManager)) {
 
-            // Show error dialog
+            // If there is no internet connection, display an error message
+            AlertDialog dialog = CustomDialogAlertBuilder.onCreateDialog(this, getResources().getString(R.string.no_internet_alert_DE_title), getResources().getString(R.string.no_internet_alert_DE), "OK");
+
+            // Create a dialog object, and set an onShow listener to it, in order to be able to change the color of the button.
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.bonnBikeColor,null));
+                }
+            });
+            dialog.show();
 
         } else {
 
             // If the app returned from background, and there is a connection reload the map, and start location updates
-
             if (mMap != null){
                 onMapReady(mMap);
             }
-
         }
     }
 
@@ -210,6 +217,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LoadServiceArea.getNetworkServiceAreas(mService, this, mMap);
 
         // Move the navigation Buttons set to the upper right corner
+        assert mapFragment.getView() != null : "MapFragment was not found";
         View navigationButtonSet = ((View) (mapFragment.getView().findViewById(Integer.parseInt("1")).getParent())).findViewById(Integer.parseInt("4"));
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) navigationButtonSet.getLayoutParams();
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);

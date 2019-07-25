@@ -1,11 +1,13 @@
 package de.cseh17.bikesharing.bonnbike;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Objects;
@@ -43,6 +45,17 @@ class LoadBikes {
                                 Log.i("Bikes & Racks", item.getName());
                             }
                             mClusterManager.cluster();
+                        } else {
+                            AlertDialog dialog = CustomDialogAlertBuilder.onCreateDialog((Activity) mContext, mContext.getResources().getString(R.string.general_error_title), mContext.getResources().getString(R.string.general_error), "OK");
+
+                            // Create a dialog object, and set an onShow listener to it, in order to be able to change the color of the button.
+                            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                                @Override
+                                public void onShow(DialogInterface dialogInterface) {
+                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(mContext.getResources().getColor(R.color.bonnBikeColor,null));
+                                }
+                            });
+                            dialog.show();
                         }
                     }
 
