@@ -33,12 +33,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="20dp"
+        android:id="@+id/impressum_button"
+        android:gravity="center"
+        android:text="@string/impressum_button"
+        android:textColor="@color/bonnBikeColor"
+        android:layout_gravity="center"
+        android:layout_marginTop="260dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
         android:id="@+id/datenschutz_button"
         android:gravity="center"
         android:text="@string/datenschutz_button"
         android:textColor="@color/bonnBikeColor"
         android:layout_gravity="center"
-        android:layout_marginTop="280dp"/>
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:layout_width="match_parent"

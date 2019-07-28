@@ -37,6 +37,12 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.Objects;
 
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import de.cseh17.bikesharing.bonnbike.BikeModel.AppLifecycleListener;
 import de.cseh17.bikesharing.bonnbike.BikeModel.Place;
 import de.cseh17.bikesharing.bonnbike.Remote.APIService;
@@ -57,9 +63,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location mLastKnownLocation;
     private LocationCallback mLocationCallback;
     private ClusterManager<Place> BikeClusterManager;
-    private Place clicketClusterItem;
     private FloatingActionButton floatingActionInfoButton;
     private FloatingActionButton floatinggetMyLocationButton;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +107,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        // Initialize the mobile ad provider service from Google
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        // Add an add to the bottom of the map fragment
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
     // ------------------------ NON - UI ---------------------
 
         // Initialize API Services
@@ -128,6 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 for (Location location : locationResult.getLocations()){
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),location.getLongitude())));
+                    LoadBikes.getBikes(mService, MapsActivity.this, BikeClusterManager);
                     Log.i("Location:", "was updated");
                 }
             }
@@ -188,6 +208,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        // Clean the map in order to eliminate duplicates
+        mMap.clear();
+
         // Set up ClusterManager
         BikeClusterManager = new ClusterManager<>(this, mMap);
 
@@ -198,8 +221,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         BikeClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Place>() {
             @Override
             public boolean onClusterItemClick(Place place) {
-                clicketClusterItem = place;
-                CustomBikeAndRackInfoWindow.getCurrentSelectedItem(clicketClusterItem);
+                CustomBikeAndRackInfoWindow.getCurrentSelectedItem(place);
                 return false;
             }
         });

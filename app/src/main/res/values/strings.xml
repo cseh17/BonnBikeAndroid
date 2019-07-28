@@ -20,7 +20,7 @@
     <string name="impressum_button">Impressum</string>
 
 
-
+    <string name="impressum_text">Krisztian Cseh \nBrücker Mauspfad 609 \n51109 Köln \ncseh1717@gmail.com \n017686705030</string>
     <string name="dsgvo_html"><![CDATA[<p>
     <strong>Datenschutzerklärung</strong>
 </p>
