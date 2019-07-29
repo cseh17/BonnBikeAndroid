@@ -44,14 +44,6 @@ public class AppInfoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AlertDialog dialog = CustomDialogAlertBuilder.onCreateDialog(getActivity(), getString(R.string.impressum_button),getString(R.string.impressum_text), "OK");
-
-                // Add onShowListener in order to be able to change the button text color
-                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface dialogInterface) {
-                        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.bonnBikeColor, null));
-                    }
-                });
                 dialog.show();
             }
         });

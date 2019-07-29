@@ -8,6 +8,7 @@
     <string name="no_internet_alert_DE_title">Keine Internetverbindung!</string>
     <string name="general_error_title">Fehler!</string>
     <string name="general_error">Ein Fehler ist aufgetreten, bitte versuchen Sie es erneut,</string>
+    <string name="location_acces_message">Um diese App benutzen zu können, benötigen wir Zugang zu dem Standort Ihres Gerätes</string>
 
 
     <string name="api_request_string_bikes">https://api.nextbike.net/maps/nextbike-live.json?city=547</string>

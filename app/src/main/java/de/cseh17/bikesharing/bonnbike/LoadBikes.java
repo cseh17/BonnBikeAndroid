@@ -47,14 +47,6 @@ class LoadBikes {
                             mClusterManager.cluster();
                         } else {
                             AlertDialog dialog = CustomDialogAlertBuilder.onCreateDialog((Activity) mContext, mContext.getResources().getString(R.string.general_error_title), mContext.getResources().getString(R.string.general_error), "OK");
-
-                            // Create a dialog object, and set an onShow listener to it, in order to be able to change the color of the button.
-                            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                                @Override
-                                public void onShow(DialogInterface dialogInterface) {
-                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(mContext.getResources().getColor(R.color.bonnBikeColor,null));
-                                }
-                            });
                             dialog.show();
                         }
                     }

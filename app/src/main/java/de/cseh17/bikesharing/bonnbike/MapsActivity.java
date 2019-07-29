@@ -176,14 +176,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // If there is no internet connection, display an error message
             AlertDialog dialog = CustomDialogAlertBuilder.onCreateDialog(this, getResources().getString(R.string.no_internet_alert_DE_title), getResources().getString(R.string.no_internet_alert_DE), "OK");
-
-            // Create a dialog object, and set an onShow listener to it, in order to be able to change the color of the button.
-            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                @Override
-                public void onShow(DialogInterface dialogInterface) {
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.bonnBikeColor,null));
-                }
-            });
             dialog.show();
 
         } else {
@@ -234,8 +226,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setInfoWindowAdapter(BikeClusterManager.getMarkerManager());
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-        getLocationPermission();
-        LoadBikes.getBikes(mService, this, BikeClusterManager);
+        //LoadBikes.getBikes(mService, this, BikeClusterManager);
+        // Update the UI when the map finished loading
+        updateLocationUI();
         LoadServiceArea.getNetworkServiceAreas(mService, this, mMap);
 
         // Move the navigation Buttons set to the upper right corner
@@ -257,8 +250,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Show an explanation to the user *ASYNCHRONUSLY*, don't block this thread waiting for the users response
                 new AlertDialog.Builder(this)
-                        .setTitle("")
-                        .setMessage("")
+                        .setTitle("Achtung")
+                        .setMessage(getString(R.string.location_acces_message))
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -292,10 +285,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Request was granted.
                 mLocationPermissionGranted = true;
+                updateLocationUI();
+                getDeviceLocation();
             }
         }
-        updateLocationUI();
-        getDeviceLocation();
     }
 
     private void updateLocationUI(){
@@ -312,7 +305,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.setMyLocationEnabled(false);
                 floatinggetMyLocationButton.setEnabled(false);
                 mLastKnownLocation = null;
-                getLocationPermission();
             }
         } catch (SecurityException e){
             Log.e("Exception: %s", Objects.requireNonNull(e.getMessage()));
@@ -349,6 +341,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void startLocationUpdate(){
         if (checkLocationPermission()) {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+            updateLocationUI();
+            getDeviceLocation();
         }
     }
 
@@ -358,9 +352,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean checkLocationPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            mLocationPermissionGranted = true;
             return true;
         } else {
             getLocationPermission();
+            mLocationPermissionGranted = false;
             return false;
         }
     }

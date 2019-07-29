@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/bonnBikeColor</item>
         <item name="colorPrimaryDark">@color/bonnBikeColor</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/bonnBikeColor</item>
         <item name="android:navigationBarColor">@color/bonnBikeColor</item>
     </style>
 
