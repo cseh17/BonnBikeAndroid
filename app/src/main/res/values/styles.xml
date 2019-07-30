@@ -9,4 +9,13 @@
         <item name="android:navigationBarColor">@color/bonnBikeColor</item>
     </style>
 
+    <!-- Splash Screen. -->
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
 </resources>
