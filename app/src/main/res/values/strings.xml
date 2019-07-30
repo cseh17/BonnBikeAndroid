@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">BonnBike</string>
-    <string name="app_version">0.1</string>
+    <string name="app_version">1.0</string>
     <string name="copyright">\u00A9 2019 Krisztian Cseh</string>
     <string name="app_data_source">Quelle der Daten: Nextbike GmbH veröffentlicht über https://opendata.bonn.de. Alle Angaben ohne Gewähr.</string>
     <string name="app_data_disclaimer">Alle in dieser App dargestellten Daten können auch über die Website www.nextbike.de abgerufen werden. \n Weder die App noch der Uhrheber dieser App können für die Korrektheit der Daten garantieren, \n noch stehen in Verbindung mit oder werden unterstützt durch Nextbike GmbH.</string>
     <string name="no_internet_alert_DE">Überprüfen Sie das Interneterbindung und versuchen Sie es erneut.</string>
+
     <string name="no_internet_alert_DE_title">Keine Internetverbindung!</string>
     <string name="general_error_title">Fehler!</string>
     <string name="general_error">Ein Fehler ist aufgetreten, bitte versuchen Sie es erneut,</string>
