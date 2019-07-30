@@ -28,7 +28,7 @@
                 map:maxImageSize="40dp"
                 map:backgroundTint="@color/bonnBikeColor"
                 map:borderWidth="0dp"
-                map:elevation="6dp"
+                map:elevation="0dp"
                 map:pressedTranslationZ="12dp"
                 map:fabSize="normal"/>
         </LinearLayout>
@@ -48,7 +48,7 @@
                 map:maxImageSize="50dp"
                 map:backgroundTint="@color/bonnBikeColor"
                 map:borderWidth="0dp"
-                map:elevation="6dp"
+                map:elevation="0dp"
                 map:pressedTranslationZ="12dp"
                 map:fabSize="normal"/>
         </LinearLayout>
