@@ -203,6 +203,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Clean the map in order to eliminate duplicates
         mMap.clear();
 
+        // Update the UI when the map finished loading
+        updateLocationUI();
+
         // Set up ClusterManager
         BikeClusterManager = new ClusterManager<>(this, mMap);
 
@@ -227,8 +230,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         //LoadBikes.getBikes(mService, this, BikeClusterManager);
-        // Update the UI when the map finished loading
-        updateLocationUI();
         LoadServiceArea.getNetworkServiceAreas(mService, this, mMap);
 
         // Move the navigation Buttons set to the upper right corner
@@ -241,36 +242,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    // Check for location permission
+    // Ask user for location permissions
     private void getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            // Check if the explanation should be showed
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+        // Check if the explanation should be showed
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                // Show an explanation to the user *ASYNCHRONUSLY*, don't block this thread waiting for the users response
-                new AlertDialog.Builder(this)
-                        .setTitle("Achtung")
-                        .setMessage(getString(R.string.location_acces_message))
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+            // Show an explanation to the user *ASYNCHRONUSLY*, don't block this thread waiting for the users response
+            new AlertDialog.Builder(this)
+                    .setTitle("Achtung")
+                    .setMessage(getString(R.string.location_acces_message))
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                                // Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
-                            }
-                        })
-                        .create()
-                        .show();
-            } else {
-
-                // No explanation needed - request permission
-                ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
-            }
+                            // Prompt the user once explanation has been shown
+                            ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+                        }
+                    })
+                    .create()
+                    .show();
         } else {
-            mLocationPermissionGranted = true;
-            updateLocationUI();
-            getDeviceLocation();
+
+            // No explanation needed - request permission
+            ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
         }
     }
 
@@ -294,20 +289,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void updateLocationUI(){
 
         // Check if there is a map
-        if (mMap == null){
-            return;
-        }
-        try {
-            if (mLocationPermissionGranted){
-                mMap.setMyLocationEnabled(true);
-                floatinggetMyLocationButton.setEnabled(true);
-            } else {
-                mMap.setMyLocationEnabled(false);
-                floatinggetMyLocationButton.setEnabled(false);
-                mLastKnownLocation = null;
+        if (mMap != null){
+            try {
+                if (mLocationPermissionGranted) {
+                    mMap.setMyLocationEnabled(true);
+                    floatinggetMyLocationButton.setEnabled(true);
+                } else {
+                    mMap.setMyLocationEnabled(false);
+                    floatinggetMyLocationButton.setEnabled(false);
+                    mLastKnownLocation = null;
+                }
+            } catch (SecurityException e) {
+                Log.e("Exception: %s", Objects.requireNonNull(e.getMessage()));
             }
-        } catch (SecurityException e){
-            Log.e("Exception: %s", Objects.requireNonNull(e.getMessage()));
         }
     }
 
